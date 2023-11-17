@@ -1,13 +1,18 @@
-import logo from './logo.svg';
 import './App.css';
+import { BrowserRouter as Router, Route, Routes, BrowserRouter } from 'react-router-dom';
+import Login from './Login.js';
+import WelcomePage from './WelcomePage.js';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        Hallå Världen
-      </header>
-    </div>
+    <Router>
+      <div className="App">
+        <Routes>
+          <Route exact path = "/" element = {<WelcomePage />} />
+          <Route path = "/login" element = {<Login />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 

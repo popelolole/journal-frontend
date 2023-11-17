@@ -1,0 +1,31 @@
+/* Header.css */
+.header {
+  background: #333;
+  color: #fff;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-list {
+  list-style: none;
+  display: flex;
+}
+
+.nav-item {
+  margin: 0 15px;
+}
+
+.nav-link {
+  color: #fff;
+  text-decoration: none;
+}
+
+.logout-button {
+  background: transparent;
+  color: #fff;
+  border: 1px solid #fff;
+  padding: 8px 15px;
+  cursor: pointer;
+}
