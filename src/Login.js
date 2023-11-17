@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
+  const navigate = useNavigate();
 
   const handleLogin = async () => {
     try{
-      const response = await fetch(`http://localhost:8080/login?username=${username}&password=${password}`, {
+    const response = await fetch(`http://localhost:8080/login?username=${username}&password=${password}`, {
       method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -21,11 +23,13 @@ const Login = () => {
 
       setUser(userData);
       console.log(userData);
+      
+      navigate('/');
 
     } catch (error) {
       console.error('Fetch error:', error);
     }
-  };
+  };  
 
   return (
     <div>
