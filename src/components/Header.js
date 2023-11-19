@@ -8,7 +8,7 @@ const Header = () => {
 
   const handleLogout = () => {
     sessionStorage.removeItem('user');
-    navigate('/login')
+    window.location.reload(true);
   }
 
   return (
