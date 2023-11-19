@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const Login = () => {
+const Login = ({onLogin}) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
   const handleLogin = async () => {
@@ -21,9 +20,9 @@ const Login = () => {
       }
       const userData = await response.json();
 
-      setUser(userData);
+      sessionStorage.setItem('user', JSON.stringify(userData));
       console.log(userData);
-      
+
       navigate('/');
 
     } catch (error) {
