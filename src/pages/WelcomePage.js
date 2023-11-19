@@ -11,7 +11,6 @@ const WelcomePage = () => {
       :
       null
       }
-      {console.log(user)}
       <h1>Medicinal Journal Application</h1>
       <p>This is an epic journal app made by epic cool elias abraham lincoln</p>
       {user==null ?

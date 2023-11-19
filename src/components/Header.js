@@ -22,7 +22,7 @@ const Header = () => {
           </li>
           {user&&user.authorities.some(authorityItem => authorityItem.authority === "ROLE_PATIENT") ?
             <li className="nav-item">
-              <Link to="/my-journal" className="nav-link">
+              <Link to={`/journal/${user.person.id}`} className="nav-link">
                 My Journal
               </Link>
             </li>
@@ -45,6 +45,13 @@ const Header = () => {
           }
         </ul>
       </nav>
+      {user?
+      <div>
+        Welcome, {user.username}
+      </div>
+      :
+      null
+      }
       <button className="logout-button" onClick={handleLogout}>
         Logout
       </button>
