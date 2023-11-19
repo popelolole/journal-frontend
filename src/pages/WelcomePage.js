@@ -1,7 +1,6 @@
-// WelcomePage.js
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Header from './Header.js';
+import Header from '../components/Header.js';
 
 const WelcomePage = () => {
   const user = JSON.parse(sessionStorage.getItem('user'));

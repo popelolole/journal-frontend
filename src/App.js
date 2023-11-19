@@ -1,7 +1,7 @@
 import './App.css';
 import { BrowserRouter as Router, Route, Routes, BrowserRouter } from 'react-router-dom';
-import Login from './Login.js';
-import WelcomePage from './WelcomePage.js';
+import Login from './components/Login.js';
+import WelcomePage from './pages/WelcomePage.js';
 import { useState } from 'react';
 
 const getUser = () => {
