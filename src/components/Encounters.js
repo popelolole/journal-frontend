@@ -42,7 +42,7 @@ function Encounters({patientId}){
   const handleAddObservation = (encounterIndex, observation) => {
     const encounter = encounters[encounterIndex];
     postObservation(encounter, observation);
-    setTimeout(() => {fetchEncounters()}, 500);
+    console.log(encounters);
   };
   
   if (loading) {
@@ -71,7 +71,12 @@ function Encounters({patientId}){
       if (response.ok) {
         const data = await response.json();
         console.log('POST request successful:', data);
-        return data;
+        setEncounters(encounters.map(en => {
+          if(en.id === encounter.id){
+            return { ...en, observations: [...en.observations, data] };
+          }
+          return en;
+        }));
       } else {
         console.error('POST request failed:', response.status, response.statusText);
       }
