@@ -28,15 +28,12 @@ function Patient({patientId}){
 
         setPatient(result);
       } catch (error) {
-        // Handle errors
         setError(error.message);
       } finally {
-        // Set loading to false whether the request succeeded or failed
         setLoading(false);
       }
     };
 
-    // Call the fetchData function
     fetchPatient();
   }, []);
 
@@ -49,7 +46,7 @@ function Patient({patientId}){
   }
 
   if (!patient) {
-    return <div><p>Patient not found.</p></div>; // Handle the case where data is not available yet
+    return <div><p>Patient not found.</p></div>;
   }
 
   return (

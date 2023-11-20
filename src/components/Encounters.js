@@ -28,15 +28,12 @@ function Encounters({patientId}){
 
         setEncounters(result);
       } catch (error) {
-        // Handle errors
         setError(error.message);
       } finally {
-        // Set loading to false whether the request succeeded or failed
         setLoading(false);
       }
     };
 
-    // Call the fetchData function
     fetchEncounters();
   }, []);
 
@@ -49,7 +46,7 @@ function Encounters({patientId}){
   }
 
   if (!encounters) {
-    return <div><p>Encounters not found.</p></div>; // Handle the case where data is not available yet
+    return <div><p>Encounters not found.</p></div>;
   }
 
   return (
