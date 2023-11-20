@@ -4,6 +4,7 @@ import Login from './components/Login.js';
 import WelcomePage from './pages/WelcomePage.js';
 import PrivateRoute from './helpers/PrivateRoute.js';
 import JournalPage from './pages/JournalPage.js';
+import PatientsPage from './pages/PatientsPage.js';
 import { useState } from 'react';
 
 const getUser = () => {
@@ -19,6 +20,9 @@ function App() {
           <Route path = "/login" element = {getUser() == null ? <Login /> : <WelcomePage />} />
           <Route element = {<PrivateRoute />}>
             <Route path = "/journal/:patientId" element = {<JournalPage />} />
+            <Route element = {<PrivateRoute authority = "ROLE_DOCTOR" />} >
+              <Route path = "/patients" element = {<PatientsPage />} />
+            </Route>
           </Route>
         </Routes>
       </div>
