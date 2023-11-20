@@ -42,7 +42,7 @@ const Header = () => {
       </nav>
       {user?
       <div>
-        Welcome, {user.username}
+        {user.username}
       </div>
       :
       null

@@ -12,6 +12,7 @@ function MessagePage(){
   const [userId, setUserId] = useState(null);
   const [conversation, setConversation] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [loadingConvo, setLoadingConvo] = useState(true);
   const [error, setError] = useState(null);
 
   const fetchUserId = async () => {
@@ -25,7 +26,9 @@ function MessagePage(){
       });
       
       if (!response.ok) {
-        throw new Error('Failed to fetch data');
+        if(response.status === 404)
+          throw new Error('This person does not have an associated user.');
+        throw new Error("Failed to fetch.");
       }
   
       const result = await response.text();
@@ -33,14 +36,17 @@ function MessagePage(){
       setUserId(result);
     } catch (error) {
       setError(error.message);
+    } finally{
+      setLoading(false);
     }
   };
   
   
   useEffect(() => {
     console.log("user id: " + userId);
-    if(userId!=null)
+    if(userId!=null){
       fetchConversation();
+    }
   }, [userId]);
   
 
@@ -67,7 +73,7 @@ function MessagePage(){
     } catch (error) {
       setError(error.message);
     } finally {
-      setLoading(false);
+      setLoadingConvo(false);
     }
   };
 
@@ -75,16 +81,11 @@ function MessagePage(){
     fetchUserId();
   }, []);
 
-  if (loading) {
-    return <div><p>Loading...</p></div>;
-  }
-
   if (error) {
     return <div><p>Error: {error}</p></div>;
   }
-
-  if (!userId) {
-    return <div><p>User not found.</p></div>;
+  else if (loading||loadingConvo) {
+    return <div><p>Loading...</p></div>;
   }
 
   const handleSendMessage = (text) => {

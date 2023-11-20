@@ -89,7 +89,7 @@ function Patient({patientId}){
         <div>
           <li>
             {patient.doctor.name} {user.authorities.some(authorityItem => authorityItem.authority === "ROLE_PATIENT") 
-            ? <Link to={`/messages/${patient.doctor.id}/${patient.doctor.name}`}>- Chat</Link> : ""}
+            ? <span>- <Link to={`/messages/${patient.doctor.id}/${patient.doctor.name}`}>Chat</Link></span> : ""}
           </li>
           <li>
             Phone number: {patient.doctor.phoneNumber}
