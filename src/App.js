@@ -17,7 +17,9 @@ function App() {
         <Routes>
           <Route exact path = "/" element = {<WelcomePage />} />
           <Route path = "/login" element = {getUser() == null ? <Login /> : <WelcomePage />} />
-          <Route path = "/journal/:patientId" element = {<JournalPage />} />
+          <Route element = {<PrivateRoute />} >
+            <Route path = "/journal/:patientId" element = {<JournalPage />} />
+          </Route>
         </Routes>
       </div>
     </Router>
