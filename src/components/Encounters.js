@@ -1,12 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import ObservationInput from './ObservationInput';
 
-const user = JSON.parse(sessionStorage.getItem('user'));
-
 function Encounters({patientId}){
   const [encounters, setEncounters] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const user = JSON.parse(sessionStorage.getItem('user'));
 
   const fetchEncounters = async () => {
     try {
@@ -57,6 +57,29 @@ function Encounters({patientId}){
     return <div><p>Encounters not found.</p></div>;
   }
 
+  const postObservation = async (encounter, observation) => {
+    try {
+      const response = await fetch(`http://localhost:8080/encounter/observation?encounterId=${encounter.id}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Basic ' + btoa(user.username + ":" + user.password)
+        },
+        body: JSON.stringify({"observation": observation, "patient": {"id": encounter.patient.id}}),
+      });
+  
+      if (response.ok) {
+        const data = await response.json();
+        console.log('POST request successful:', data);
+        return data;
+      } else {
+        console.error('POST request failed:', response.status, response.statusText);
+      }
+    } catch (error) {
+      console.error('An error occurred while making the POST request:', error);
+    }
+  };
+
   return (
     <div>
       <h2>Encounters</h2>
@@ -72,9 +95,11 @@ function Encounters({patientId}){
             <li>Observation: {observation.observation}</li>
           </div>
         )}
+        {user.authorities.some(authorityItem => authorityItem.authority === "ROLE_DOCTOR") ? 
         <ObservationInput
             onAddObservation={(observation) => handleAddObservation(index, observation)}
-          />
+          /> 
+          : ""}
         <br />
         </div>
           )}
@@ -82,28 +107,5 @@ function Encounters({patientId}){
     </div>
   );
 }
-
-const postObservation = async (encounter, observation) => {
-  try {
-    const response = await fetch(`http://localhost:8080/encounter/observation?encounterId=${encounter.id}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Basic ' + btoa(user.username + ":" + user.password)
-      },
-      body: JSON.stringify({"observation": observation, "patient": {"id": encounter.patient.id}}),
-    });
-
-    if (response.ok) {
-      const data = await response.json();
-      console.log('POST request successful:', data);
-      return data;
-    } else {
-      console.error('POST request failed:', response.status, response.statusText);
-    }
-  } catch (error) {
-    console.error('An error occurred while making the POST request:', error);
-  }
-};
 
 export default Encounters;

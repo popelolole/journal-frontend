@@ -29,11 +29,6 @@ const Header = () => {
           :
             null
           }
-          <li className="nav-item">
-            <Link to="/messages" className="nav-link">
-              Messages
-            </Link>
-          </li>
           {user&&user.authorities.some(authorityItem => authorityItem.authority === "ROLE_DOCTOR") ?
             <li className="nav-item">
               <Link to="/patients" className="nav-link">

@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import { Link } from 'react-router-dom';
 
 function Patient({patientId}){
   const [patient, setPatient] = useState(null);
@@ -87,7 +88,8 @@ function Patient({patientId}){
         {patient.doctor ? 
         <div>
           <li>
-            {patient.doctor.name}
+            {patient.doctor.name} - {user.authorities.some(authorityItem => authorityItem.authority === "ROLE_PATIENT") 
+            ? <Link to={`/messages/${patient.doctor.id}/${patient.doctor.name}`}>Chat</Link> : ""}
           </li>
           <li>
             Phone number: {patient.doctor.phoneNumber}

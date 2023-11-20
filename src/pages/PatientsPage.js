@@ -63,6 +63,7 @@ function PatientsPage(){
             <p><strong>Name:</strong> <Link to={`/journal/${patient.id}`}>{patient.name}</Link> </p>
             <p><strong>Gender:</strong> {patient.gender}</p>
             <p><strong>Date of Birth:</strong> {patient.dob}</p>
+            <p><Link to={`/messages/${patient.id}/${patient.name}`}>Chat</Link></p>
           </li>
         )}
       </ul>
