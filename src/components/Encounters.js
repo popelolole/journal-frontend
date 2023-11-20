@@ -58,15 +58,16 @@ function Encounters({patientId}){
       <ul>
         {encounters.map(encounter => 
         <div>
-          <li>Date: {encounter.date}</li>
+          <li><strong>Encounter date: </strong>{encounter.date}</li>
           <li>Location: {encounter.location}</li>
           <li>Doctor: {encounter.doctor != null ? encounter.doctor.name : ""}</li>
-        <h3>Observations</h3>
+        <br />
         {encounter.observations.map(observation => 
           <div>
             <li>Observation: {observation.observation}</li>
           </div>
         )}
+        <br />
         </div>
           )}
       </ul>

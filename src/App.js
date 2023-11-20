@@ -17,7 +17,7 @@ function App() {
         <Routes>
           <Route exact path = "/" element = {<WelcomePage />} />
           <Route path = "/login" element = {getUser() == null ? <Login /> : <WelcomePage />} />
-          <Route element = {<PrivateRoute />} >
+          <Route element = {<PrivateRoute />}>
             <Route path = "/journal/:patientId" element = {<JournalPage />} />
           </Route>
         </Routes>
