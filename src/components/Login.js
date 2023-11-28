@@ -18,10 +18,15 @@ const Login = () => {
         console.error('Login failed:', response.status, response.statusText);
         return;
       }
-      const userData = await response.json();
+      const tokenString = await response.text();
 
-      sessionStorage.setItem('user', JSON.stringify(userData));
-      console.log(userData);
+      console.log(tokenString);
+
+      sessionStorage.setItem('token', tokenString);
+
+      let tokenParts = tokenString.split(":")
+      let tokenJSON = {"id": tokenParts[0], "username": tokenParts[1], "role": tokenParts[2], "personId": tokenParts[3]};
+      sessionStorage.setItem('tokenJSON', JSON.stringify(tokenJSON));
 
       navigate('/');
 

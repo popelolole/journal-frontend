@@ -7,18 +7,18 @@ function PatientsPage(){
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const user = JSON.parse(sessionStorage.getItem('user'));
-
-  const doctorId = user.person.id;
+  const user = JSON.parse(sessionStorage.getItem('tokenJSON'));
 
   useEffect(() => {
     const fetchDoctor = async () => {
       try {
+        const doctorId = user.personId;
+        const token = sessionStorage.getItem('token');
         const response = await fetch(`http://localhost:8080/doctor?id=${doctorId}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Basic ' + btoa(user.username + ":" + user.password)
+            'Authorization': `Bearer ${token}`
           },
         });
         

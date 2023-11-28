@@ -7,7 +7,7 @@ import MessageInputField from '../components/MessageInputField';
 
 function MessagePage(){
   const { personId, name } = useParams();
-  const user = JSON.parse(sessionStorage.getItem('user'));
+  const user = JSON.parse(sessionStorage.getItem('tokenJSON'));
 
   const [userId, setUserId] = useState(null);
   const [conversation, setConversation] = useState(null);
@@ -17,11 +17,12 @@ function MessagePage(){
 
   const fetchUserId = async () => {
     try {
+      const token = sessionStorage.getItem('token');
       const response = await fetch(`http://localhost:8080/user?personId=${personId}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Basic ' + btoa(user.username + ":" + user.password)
+          'Authorization': `Bearer ${token}`
         },
       });
       
@@ -52,12 +53,13 @@ function MessagePage(){
 
   const fetchConversation = async () => {
     try {
+      const token = sessionStorage.getItem('token');
       console.log("users id is " + userId);
       const response = await fetch(`http://localhost:8080/messages?userId1=${user.id}&userId2=${userId}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Basic ' + btoa(user.username + ":" + user.password)
+          'Authorization': `Bearer ${token}`
         },
       });
       

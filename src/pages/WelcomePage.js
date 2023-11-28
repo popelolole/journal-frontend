@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import Header from '../components/Header.js';
 
 const WelcomePage = () => {
-  const user = JSON.parse(sessionStorage.getItem('user'));
+  const user = JSON.parse(sessionStorage.getItem('tokenJSON'));
   return (
     <div>
       {user!=null ?

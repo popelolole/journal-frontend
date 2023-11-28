@@ -9,7 +9,7 @@ import MessagePage from './pages/MessagePage.js';
 import { useState } from 'react';
 
 const getUser = () => {
-  return JSON.parse(sessionStorage.getItem('user'));
+  return JSON.parse(sessionStorage.getItem('tokenJSON'));
 }
 
 function App() {

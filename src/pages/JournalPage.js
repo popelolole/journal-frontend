@@ -7,8 +7,6 @@ import Encounters from '../components/Encounters'
 function JournalPage(){
   const { patientId } = useParams();
 
-  const user = JSON.parse(sessionStorage.getItem('user'));
-
   return (
     <div>
       <Header />

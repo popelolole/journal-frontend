@@ -6,16 +6,17 @@ function Encounters({patientId}){
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const user = JSON.parse(sessionStorage.getItem('user'));
+  const user = JSON.parse(sessionStorage.getItem('tokenJSON'));
 
   const fetchEncounters = async () => {
     try {
       setLoading(true);
+      const token = sessionStorage.getItem('token');
       const response = await fetch(`http://localhost:8080/patient/encounters?patientId=${patientId}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Basic ' + btoa(user.username + ":" + user.password)
+          'Authorization': `Bearer ${token}`
         },
       });
       
@@ -59,11 +60,12 @@ function Encounters({patientId}){
 
   const postObservation = async (encounter, observation) => {
     try {
+      const token = sessionStorage.getItem('token');
       const response = await fetch(`http://localhost:8080/encounter/observation?encounterId=${encounter.id}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Basic ' + btoa(user.username + ":" + user.password)
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({"observation": observation, "patient": {"id": encounter.patient.id}}),
       });
@@ -100,7 +102,7 @@ function Encounters({patientId}){
             <li>Observation: {observation.observation}</li>
           </div>
         )}
-        {user.authorities.some(authorityItem => authorityItem.authority === "ROLE_DOCTOR") ? 
+        {user.role === "ROLE_DOCTOR" ? 
         <ObservationInput
             onAddObservation={(observation) => handleAddObservation(index, observation)}
           /> 

@@ -3,13 +3,16 @@ import { Link, Navigate, useNavigate } from 'react-router-dom';
 import './Header.css';
 
 const Header = () => {
-  const user = JSON.parse(sessionStorage.getItem('user'));
+  const user = JSON.parse(sessionStorage.getItem('tokenJSON'));
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    sessionStorage.removeItem('user');
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('tokenJSON');
     window.location.reload(true);
   }
+  console.log(user);
+  console.log(user.role);
 
   return (
     <div className="header">
@@ -20,16 +23,16 @@ const Header = () => {
               Home
             </Link>
           </li>
-          {user&&user.authorities.some(authorityItem => authorityItem.authority === "ROLE_PATIENT") ?
+          {user&&user.role === "ROLE_PATIENT" ?
             <li className="nav-item">
-              <Link to={`/journal/${user.person.id}`} className="nav-link">
+              <Link to={`/journal/${user.personId}`} className="nav-link">
                 My Journal
               </Link>
             </li>
           :
             null
           }
-          {user&&user.authorities.some(authorityItem => authorityItem.authority === "ROLE_DOCTOR") ?
+          {user&&user.role === "ROLE_DOCTOR" ?
             <li className="nav-item">
               <Link to="/patients" className="nav-link">
                 My Patients
