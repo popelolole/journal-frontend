@@ -8,7 +8,7 @@ const Login = () => {
 
   const handleLogin = async () => {
     try{
-    const response = await fetch(`http://localhost:8080/login?username=${username}&password=${password}`, {
+    const response = await fetch(`http://localhost:30764/login?username=${username}&password=${password}`, {
       method: 'GET',
         headers: {
           'Content-Type': 'application/json'

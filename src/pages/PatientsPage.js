@@ -14,7 +14,7 @@ function PatientsPage(){
       try {
         const doctorId = user.personId;
         const token = sessionStorage.getItem('token');
-        const response = await fetch(`http://localhost:8080/doctor?id=${doctorId}`, {
+        const response = await fetch(`http://localhost:31919/doctor?id=${doctorId}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

@@ -18,7 +18,7 @@ function MessagePage(){
   const fetchUserId = async () => {
     try {
       const token = sessionStorage.getItem('token');
-      const response = await fetch(`http://localhost:8080/user?personId=${personId}`, {
+      const response = await fetch(`http://localhost:30764/user?personId=${personId}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -55,7 +55,7 @@ function MessagePage(){
     try {
       const token = sessionStorage.getItem('token');
       console.log("users id is " + userId);
-      const response = await fetch(`http://localhost:8080/messages?userId1=${user.id}&userId2=${userId}`, {
+      const response = await fetch(`http://localhost:32632/messages?userId1=${user.id}&userId2=${userId}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -106,11 +106,12 @@ function MessagePage(){
 
   const postMessage = async (message) => {
     try {
-      const response = await fetch(`http://localhost:8080/message`, {
+      const token = sessionStorage.getItem('token');
+      const response = await fetch(`http://localhost:32632/message`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Basic ' + btoa(user.username + ":" + user.password)
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(message),
       });

@@ -12,7 +12,7 @@ function Patient({patientId}){
     const fetchPatient = async () => {
       try {
         const token = sessionStorage.getItem('token');
-        const response = await fetch(`http://localhost:8080/patient?id=${patientId}`, {
+        const response = await fetch(`http://localhost:31919/patient?id=${patientId}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -89,7 +89,7 @@ function Patient({patientId}){
         {patient.doctor ? 
         <div>
           <li>
-            {patient.doctor.name} {user.authorities.some(authorityItem => authorityItem.authority === "ROLE_PATIENT") 
+            {patient.doctor.name} {user.role === "ROLE_PATIENT" 
             ? <span>- <Link to={`/messages/${patient.doctor.id}/${patient.doctor.name}`}>Chat</Link></span> : ""}
           </li>
           <li>

@@ -12,7 +12,7 @@ function Encounters({patientId}){
     try {
       setLoading(true);
       const token = sessionStorage.getItem('token');
-      const response = await fetch(`http://localhost:8080/patient/encounters?patientId=${patientId}`, {
+      const response = await fetch(`http://localhost:31919/patient/encounters?patientId=${patientId}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -61,7 +61,7 @@ function Encounters({patientId}){
   const postObservation = async (encounter, observation) => {
     try {
       const token = sessionStorage.getItem('token');
-      const response = await fetch(`http://localhost:8080/encounter/observation?encounterId=${encounter.id}`, {
+      const response = await fetch(`http://localhost:31919/encounter/observation?encounterId=${encounter.id}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
