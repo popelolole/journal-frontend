@@ -1,18 +1,15 @@
 import React from 'react';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import './Header.css';
 
 const Header = () => {
   const user = JSON.parse(sessionStorage.getItem('tokenJSON'));
-  const navigate = useNavigate();
 
   const handleLogout = () => {
     sessionStorage.removeItem('token');
     sessionStorage.removeItem('tokenJSON');
     window.location.reload(true);
   }
-  console.log(user);
-  console.log(user.role);
 
   return (
     <div className="header">
@@ -36,6 +33,15 @@ const Header = () => {
             <li className="nav-item">
               <Link to="/patients" className="nav-link">
                 My Patients
+              </Link>
+            </li>
+          :
+            null
+          }
+          {user&&user.role === "ROLE_DOCTOR" ?
+            <li className="nav-item">
+              <Link to="/search" className="nav-link">
+                Search
               </Link>
             </li>
           :

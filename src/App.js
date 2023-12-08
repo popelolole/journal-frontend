@@ -7,6 +7,7 @@ import JournalPage from './pages/JournalPage.js';
 import PatientsPage from './pages/PatientsPage.js';
 import MessagePage from './pages/MessagePage.js';
 import { useState } from 'react';
+import SearchPage from './pages/SearchPage.js';
 
 const getUser = () => {
   return JSON.parse(sessionStorage.getItem('tokenJSON'));
@@ -24,6 +25,7 @@ function App() {
             <Route path = "/messages/:personId/:name" element = {<MessagePage />} />
             <Route element = {<PrivateRoute authority = "ROLE_DOCTOR" />} >
               <Route path = "/patients" element = {<PatientsPage />} />
+              <Route path = "/search" element = {<SearchPage />} />
             </Route>
           </Route>
         </Routes>
