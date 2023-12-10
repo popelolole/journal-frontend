@@ -24,7 +24,7 @@ const SearchPage = () => {
   const fetchEncountersForDoctor = async (doctorId) => {
     const token = sessionStorage.getItem('token');
     try{
-      const response = await fetch(`http://localhost:8080/encounter/byDoctor/${doctorId}`, {
+      const response = await fetch(`http://localhost:31219/encounter/byDoctor/${doctorId}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -54,7 +54,7 @@ const SearchPage = () => {
     
     const token = sessionStorage.getItem('token');
     try{
-    const response = await fetch(`http://localhost:8080/${searchType}/by${searchField}?name=${searchText}`, {
+    const response = await fetch(`http://localhost:31219/${searchType}/by${searchField}?name=${searchText}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
