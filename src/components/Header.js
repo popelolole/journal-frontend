@@ -47,6 +47,11 @@ const Header = () => {
           :
             null
           }
+          <li className="nav-item">
+            <Link to="/images" className="nav-link">
+              Images
+            </Link>
+          </li>
         </ul>
       </nav>
       {user?
