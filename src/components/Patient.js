@@ -12,7 +12,7 @@ function Patient({patientId}){
     const fetchPatient = async () => {
       try {
         const token = sessionStorage.getItem('token');
-        const response = await fetch(`http://localhost:31919/patient?id=${patientId}`, {
+        const response = await fetch(`http://localhost:31000/patient?id=${patientId}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
