@@ -35,7 +35,7 @@ const ImagePage = () => {
       const token = sessionStorage.getItem('token');
 
       try {
-        const response = await fetch('http://localhost:3001/images', {
+        const response = await fetch('http://localhost:31100/images', {
           method: 'POST',
           body: formData,
           headers: {
@@ -57,7 +57,7 @@ const ImagePage = () => {
     try {
       const token = sessionStorage.getItem('token');
 
-      const response = await fetch(`http://localhost:3001/images/${searchId}`, {
+      const response = await fetch(`http://localhost:31100/images/${searchId}`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -89,7 +89,7 @@ const ImagePage = () => {
     const token = sessionStorage.getItem('token');
 
     try {
-      const response = await fetch(`http://localhost:3001/images/update/${searchResult.result.id}`, {
+      const response = await fetch(`http://localhost:31100/images/update/${searchResult.result.id}`, {
         method: 'POST',
         body: formData,
         headers: {
