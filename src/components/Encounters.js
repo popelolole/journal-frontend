@@ -12,7 +12,7 @@ function Encounters({patientId}){
     try {
       setLoading(true);
       const token = sessionStorage.getItem('token');
-      const response = await fetch(`hhttps://raven-journal.app.cloud.cbh.kth.se/patient/encounters?patientId=${patientId}`, {
+      const response = await fetch(`https://raven-journal.app.cloud.cbh.kth.se/patient/encounters?patientId=${patientId}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
