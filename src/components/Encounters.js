@@ -12,7 +12,7 @@ function Encounters({patientId}){
     try {
       setLoading(true);
       const token = sessionStorage.getItem('token');
-      const response = await fetch(`http://localhost:31000/patient/encounters?patientId=${patientId}`, {
+      const response = await fetch(`hhttps://raven-journal.app.cloud.cbh.kth.se/patient/encounters?patientId=${patientId}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -61,7 +61,7 @@ function Encounters({patientId}){
   const postObservation = async (encounter, observation) => {
     try {
       const token = sessionStorage.getItem('token');
-      const response = await fetch(`http://localhost:31000/encounter/observation?encounterId=${encounter.id}`, {
+      const response = await fetch(`https://raven-journal.app.cloud.cbh.kth.se/encounter/observation?encounterId=${encounter.id}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
