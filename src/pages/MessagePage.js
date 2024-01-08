@@ -3,11 +3,13 @@ import { useParams } from 'react-router-dom';
 import Header from '../components/Header';
 import Message from '../components/Message';
 import MessageInputField from '../components/MessageInputField';
+import { useAuth } from 'react-oidc-context';
+
 
 
 function MessagePage(){
   const { personId, name } = useParams();
-  const user = JSON.parse(sessionStorage.getItem('tokenJSON'));
+  const auth = useAuth();
 
   const [userId, setUserId] = useState(null);
   const [conversation, setConversation] = useState(null);
@@ -17,8 +19,8 @@ function MessagePage(){
 
   const fetchUserId = async () => {
     try {
-      const token = sessionStorage.getItem('token');
-      const response = await fetch(`https://raven-user-svc.app.cloud.cbh.kth.se/user?personId=${personId}`, {
+      const token = auth.user?.access_token;
+      const response = await fetch(`https://raven-journal.app.cloud.cbh.kth.se/person/user-id?personId=${personId}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -53,9 +55,9 @@ function MessagePage(){
 
   const fetchConversation = async () => {
     try {
-      const token = sessionStorage.getItem('token');
+      const token = auth.user?.access_token;
       console.log("users id is " + userId);
-      const response = await fetch(`https://raven-message-svc.app.cloud.cbh.kth.se/messages?userId1=${user.id}&userId2=${userId}`, {
+      const response = await fetch(`https://raven-message-svc.app.cloud.cbh.kth.se/messages?userId1=${auth.user?.profile.sub}&userId2=${userId}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -94,7 +96,7 @@ function MessagePage(){
     const newMessage = {
       message: text,
       sendDate: new Date(Date.now()),
-      senderId: user.id,
+      senderId: auth.user?.profile.sub,
       receiverId: userId
     };
     console.log(newMessage);
@@ -106,7 +108,7 @@ function MessagePage(){
 
   const postMessage = async (message) => {
     try {
-      const token = sessionStorage.getItem('token');
+      const token = auth.user?.access_token;
       const response = await fetch(`https://raven-message-svc.app.cloud.cbh.kth.se/message`, {
         method: 'POST',
         headers: {
@@ -135,7 +137,7 @@ function MessagePage(){
       <div>
         <div className="message-list">
           {conversation.map(message => (
-            <Message key={message.id} message={message} isCurrentUser={message.senderId === user.id} />
+            <Message key={message.id} message={message} isCurrentUser={message.senderId === auth.user?.profile.sub} />
           ))}
         </div>
         <MessageInputField onSendMessage={handleSendMessage} />

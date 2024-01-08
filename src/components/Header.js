@@ -1,15 +1,32 @@
-import React from 'react';
+import {React, useState, useEffect} from 'react';
 import { Link } from 'react-router-dom';
 import './Header.css';
+import { useAuth } from 'react-oidc-context';
+import { jwtDecode } from 'jwt-decode';
+
 
 const Header = () => {
-  const user = JSON.parse(sessionStorage.getItem('tokenJSON'));
+  const auth = useAuth();
 
-  const handleLogout = () => {
-    sessionStorage.removeItem('token');
-    sessionStorage.removeItem('tokenJSON');
-    window.location.reload(true);
-  }
+  const [roles, setRoles] = useState([]);
+  const [personId, setPersonId] = useState();
+  const [userName, setUserName] = useState();
+
+  useEffect(() => {
+    const extractInfo = () => {
+      if (auth && auth.user && auth.user.access_token) {
+        const decodedToken = jwtDecode(auth.user.access_token);
+        const realmRoles = decodedToken.realm_access?.roles || [];
+        setRoles(realmRoles);
+        const personId = decodedToken.person_id;
+        setPersonId(personId);
+        const username = decodedToken.preferred_username;
+        setUserName(username);
+      }
+    };
+
+    extractInfo();
+  }, [auth]);
 
   return (
     <div className="header">
@@ -20,16 +37,16 @@ const Header = () => {
               Home
             </Link>
           </li>
-          {user&&user.role === "ROLE_PATIENT" ?
+          {auth.isAuthenticated&&roles.includes("ROLE_PATIENT") ?
             <li className="nav-item">
-              <Link to={`/journal/${user.personId}`} className="nav-link">
+              <Link to={`/journal/${personId}`} className="nav-link">
                 My Journal
               </Link>
             </li>
           :
             null
           }
-          {user&&user.role === "ROLE_DOCTOR" ?
+          {auth.isAuthenticated&&roles.includes("ROLE_DOCTOR") ?
             <li className="nav-item">
               <Link to="/patients" className="nav-link">
                 My Patients
@@ -38,7 +55,7 @@ const Header = () => {
           :
             null
           }
-          {user&&user.role === "ROLE_DOCTOR" ?
+          {auth.isAuthenticated&&roles.includes("ROLE_DOCTOR") ?
             <li className="nav-item">
               <Link to="/search" className="nav-link">
                 Search
@@ -54,14 +71,14 @@ const Header = () => {
           </li>
         </ul>
       </nav>
-      {user?
+      {auth.isAuthenticated?
       <div>
-        {user.username}
+        {userName}
       </div>
       :
       null
       }
-      <button className="logout-button" onClick={handleLogout}>
+      <button className="logout-button" onClick={() => auth.removeUser()}>
         Logout
       </button>
     </div>

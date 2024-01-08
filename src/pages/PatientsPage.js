@@ -1,19 +1,35 @@
 import React, {useState, useEffect} from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import Header from '../components/Header'
+import { useAuth } from 'react-oidc-context';
+import { jwtDecode } from 'jwt-decode';
 
 function PatientsPage(){
   const [doctor, setDoctor] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const user = JSON.parse(sessionStorage.getItem('tokenJSON'));
+  const auth = useAuth();
+
+  const [personId, setPersonId] = useState();
+
+  useEffect(() => {
+    const extractInfo = () => {
+      if (auth && auth.user && auth.user.access_token) {
+        const decodedToken = jwtDecode(auth.user.access_token);
+        const personId = decodedToken.person_id;
+        setPersonId(personId);
+      }
+    };
+
+    extractInfo();
+  }, [auth]);
 
   useEffect(() => {
     const fetchDoctor = async () => {
       try {
-        const doctorId = user.personId;
-        const token = sessionStorage.getItem('token');
+        const doctorId = auth.user.profile.person_id;
+        const token = auth.user?.access_token;
         const response = await fetch(`https://raven-journal.app.cloud.cbh.kth.se/doctor?id=${doctorId}`, {
           method: 'GET',
           headers: {

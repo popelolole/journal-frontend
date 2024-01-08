@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Header from '../components/Header.js';
+import { useAuth } from 'react-oidc-context';
 
 const SearchPage = () => {
   const [searchType, setSearchType] = useState('patient');
@@ -8,6 +9,7 @@ const SearchPage = () => {
   const [searchField, setSearchField] = useState('Name');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const auth = useAuth();
 
   const handleSearchTypeChange = (event) => {
     setSearchType(event.target.value);
@@ -22,7 +24,7 @@ const SearchPage = () => {
   };
 
   const fetchEncountersForDoctor = async (doctorId) => {
-    const token = sessionStorage.getItem('token');
+    const token = auth.user?.access_token;
     try{
       const response = await fetch(`http://https://raven-search-svc.app.cloud.cbh.kth.se/encounter/byDoctor/${doctorId}`, {
         method: 'GET',
@@ -52,7 +54,7 @@ const SearchPage = () => {
     setLoading(true);
     console.log(`Searching for ${searchType}s with ${searchText}`);
     
-    const token = sessionStorage.getItem('token');
+    const token = auth.user?.access_token;
     try{
     const response = await fetch(`https://raven-search-svc.app.cloud.cbh.kth.se/${searchType}/by${searchField}?name=${searchText}`, {
       method: 'GET',

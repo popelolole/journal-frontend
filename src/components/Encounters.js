@@ -1,17 +1,34 @@
 import React, {useState, useEffect} from 'react';
 import ObservationInput from './ObservationInput';
+import { useAuth } from 'react-oidc-context';
+import { jwtDecode } from 'jwt-decode';
+
 
 function Encounters({patientId}){
   const [encounters, setEncounters] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const user = JSON.parse(sessionStorage.getItem('tokenJSON'));
+  const auth = useAuth();
+
+  const [roles, setRoles] = useState([]);
+
+  useEffect(() => {
+    const extractInfo = () => {
+      if (auth && auth.user && auth.user.access_token) {
+        const decodedToken = jwtDecode(auth.user.access_token);
+        const realmRoles = decodedToken.realm_access?.roles || [];
+        setRoles(realmRoles);
+      }
+    };
+
+    extractInfo();
+  }, [auth]);
 
   const fetchEncounters = async () => {
     try {
       setLoading(true);
-      const token = sessionStorage.getItem('token');
+      const token = auth.user?.access_token;
       const response = await fetch(`https://raven-journal.app.cloud.cbh.kth.se/patient/encounters?patientId=${patientId}`, {
         method: 'GET',
         headers: {
@@ -60,7 +77,7 @@ function Encounters({patientId}){
 
   const postObservation = async (encounter, observation) => {
     try {
-      const token = sessionStorage.getItem('token');
+      const token = auth.user?.access_token;
       const response = await fetch(`https://raven-journal.app.cloud.cbh.kth.se/encounter/observation?encounterId=${encounter.id}`, {
         method: 'POST',
         headers: {
@@ -102,7 +119,7 @@ function Encounters({patientId}){
             <li>Observation: {observation.observation}</li>
           </div>
         )}
-        {user.role === "ROLE_DOCTOR" ? 
+        {roles.includes("ROLE_DOCTOR") ? 
         <ObservationInput
             onAddObservation={(observation) => handleAddObservation(index, observation)}
           /> 

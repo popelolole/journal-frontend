@@ -1,21 +1,23 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../components/Header.js';
+import { useAuth } from 'react-oidc-context';
 
 const WelcomePage = () => {
-  const user = JSON.parse(sessionStorage.getItem('tokenJSON'));
+  const auth = useAuth();
+  //const user = JSON.parse(sessionStorage.getItem('tokenJSON'));
   return (
     <div>
-      {user!=null ?
+      {auth.isAuthenticated ?
       <Header />
       :
       null
       }
       <h1>Medicinal Journal Application</h1>
-      {user==null ?
-      <Link to="/login">
-        <button>Go to Login</button>
-      </Link>
+      {!auth.isAuthenticated ?
+      <button onClick={() => auth.signinRedirect()}>
+        Log in
+      </button>
       :
       null
       }

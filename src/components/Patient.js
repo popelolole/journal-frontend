@@ -1,17 +1,34 @@
 import React, {useState, useEffect} from 'react';
 import { Link } from 'react-router-dom';
+import { useAuth } from 'react-oidc-context';
+import { jwtDecode } from 'jwt-decode';
+
 
 function Patient({patientId}){
   const [patient, setPatient] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const user = JSON.parse(sessionStorage.getItem('tokenJSON'));
+  const auth = useAuth();
+
+  const [roles, setRoles] = useState([]);
+
+  useEffect(() => {
+    const extractInfo = () => {
+      if (auth && auth.user && auth.user.access_token) {
+        const decodedToken = jwtDecode(auth.user.access_token);
+        const realmRoles = decodedToken.realm_access?.roles || [];
+        setRoles(realmRoles);
+      }
+    };
+
+    extractInfo();
+  }, [auth]);
 
   useEffect(() => {
     const fetchPatient = async () => {
       try {
-        const token = sessionStorage.getItem('token');
+        const token = auth.user?.access_token;
         const response = await fetch(`https://raven-journal.app.cloud.cbh.kth.se/patient?id=${patientId}`, {
           method: 'GET',
           headers: {
@@ -89,7 +106,7 @@ function Patient({patientId}){
         {patient.doctor ? 
         <div>
           <li>
-            {patient.doctor.name} {user.role === "ROLE_PATIENT" 
+            {patient.doctor.name} {roles.includes("ROLE_PATIENT")
             ? <span>- <Link to={`/messages/${patient.doctor.id}/${patient.doctor.name}`}>Chat</Link></span> : ""}
           </li>
           <li>

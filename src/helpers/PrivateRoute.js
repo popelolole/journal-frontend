@@ -1,20 +1,21 @@
 import React from 'react';
 import { Route, Navigate, Outlet } from 'react-router-dom';
+import { useAuth } from 'react-oidc-context';
+import { jwtDecode } from 'jwt-decode';
+
 
 const PrivateRoute = ({ authority }) => {
-  const user = JSON.parse(sessionStorage.getItem('tokenJSON'))
+  const auth = useAuth();
+
+	const isLoggedIn = auth.isAuthenticated;
+
   if(authority){
-    if(user!=null&&user.role === authority)
-      return <Outlet />
-    else
-      return <Navigate to="/login" />
+    const decodedToken = jwtDecode(auth.user.access_token);
+    const realmRoles = decodedToken.realm_access?.roles || [];
+    return isLoggedIn && realmRoles.includes(authority) ?
+      <Outlet /> : <Navigate to="/" />
   }
-  else{
-    if(user!=null)
-      return <Outlet />
-    else
-      return <Navigate to="/login" />
-  }
+  return isLoggedIn ? <Outlet /> : <Navigate to="/" />
 }
 
 export default PrivateRoute;

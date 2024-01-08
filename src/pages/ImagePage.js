@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import Header from '../components/Header.js';
 import DrawingComponent from '../components/DrawingComponent.js';
+import { useAuth } from 'react-oidc-context';
+
 
 
 const ImagePage = () => {
@@ -9,7 +11,7 @@ const ImagePage = () => {
   const [searchId, setSearchId] = useState('');
   const [searchResult, setSearchResult] = useState(null);
 
-  const user = JSON.parse(sessionStorage.getItem('tokenJSON'));
+  const auth = useAuth();
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -30,9 +32,9 @@ const ImagePage = () => {
       const formData = new FormData();
       formData.append('image', selectedFile);
       formData.append('name', selectedFile.name);
-      formData.append('uploaded_by_id', user.id);
+      formData.append('uploaded_by_id', auth.user?.profile.sub);
 
-      const token = sessionStorage.getItem('token');
+      const token = auth.user?.access_token;
 
       try {
         const response = await fetch('https://raven-image-svc.app.cloud.cbh.kth.se/images', {
@@ -55,7 +57,7 @@ const ImagePage = () => {
 
   const handleSearch = async () => {
     try {
-      const token = sessionStorage.getItem('token');
+      const token = auth.user?.access_token;
 
       const response = await fetch(`https://raven-image-svc.app.cloud.cbh.kth.se/images/${searchId}`, {
         headers: {
@@ -86,7 +88,7 @@ const ImagePage = () => {
     const formData = new FormData();
     formData.append('image', blob);
 
-    const token = sessionStorage.getItem('token');
+    const token = auth.user?.access_token;
 
     try {
       const response = await fetch(`https://raven-image-svc.app.cloud.cbh.kth.se/images/update/${searchResult.result.id}`, {
